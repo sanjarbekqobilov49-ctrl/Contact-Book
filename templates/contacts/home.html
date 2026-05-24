@@ -1,0 +1,85 @@
+{% extends 'contacts/base.html' %}
+
+{% block title %}Home - Contact Book{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-6 mb-4">
+            <i class="bi bi-house-door-fill"></i> Dashboard
+        </h1>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card border-primary h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-muted">Total Contacts</h5>
+                <p class="display-3 fw-bold text-primary">{{ total_contacts }}</p>
+                <i class="bi bi-people-fill fs-1 text-primary opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-success h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title text-muted">Categories</h5>
+                <p class="display-3 fw-bold text-success">{{ categories|length }}</p>
+                <i class="bi bi-tags-fill fs-1 text-success opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 d-flex align-items-center">
+        <a href="{% url 'add_contact' %}" class="btn btn-primary btn-lg w-100 py-4">
+            <i class="bi bi-person-plus-fill"></i> Add Contact
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-white">
+        <h5 class="mb-0"><i class="bi bi-pie-chart-fill"></i> Contacts by Category</h5>
+    </div>
+    <div class="card-body">
+        {% if categories %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Category</th>
+                            <th>Count</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cat in categories %}
+                            <tr>
+                                <td>
+                                    <span class="badge bg-secondary fs-6">{{ cat.name }}</span>
+                                </td>
+                                <td class="fw-bold">{{ cat.contact_count }}</td>
+                                <td>
+                                    <a href="{% url 'contact_list' %}?category={{ cat.id }}" class="btn btn-sm btn-outline-primary">
+                                        View Contacts
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted mb-0">No categories yet. <a href="{% url 'category_list' %}">Create one</a>.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% if total_contacts == 0 %}
+<div class="alert alert-info mt-4 text-center">
+    <i class="bi bi-info-circle-fill"></i>
+    Your contact book is empty.
+    <a href="{% url 'add_contact' %}" class="alert-link">Add your first contact</a>.
+</div>
+{% endif %}
+{% endblock %}

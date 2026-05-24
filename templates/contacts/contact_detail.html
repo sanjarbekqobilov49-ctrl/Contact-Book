@@ -1,0 +1,78 @@
+{% extends 'contacts/base.html' %}
+
+{% block title %}{{ contact.full_name }} - Contact Book{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                {% if contact.image %}
+                    <img src="{{ contact.image.url }}" alt="{{ contact.full_name }}"
+                         class="rounded-circle mb-3" width="150" height="150"
+                         style="object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center mb-3"
+                         style="width: 150px; height: 150px;">
+                        <i class="bi bi-person-fill text-white display-3"></i>
+                    </div>
+                {% endif %}
+
+                <h3>{{ contact.full_name }}</h3>
+                {% if contact.category %}
+                    <span class="badge bg-info fs-6 mb-3">{{ contact.category.name }}</span>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th><i class="bi bi-telephone-fill"></i> Phone</th>
+                            <td>{{ contact.phone }}</td>
+                        </tr>
+                        {% if contact.email %}
+                            <tr>
+                                <th><i class="bi bi-envelope-fill"></i> Email</th>
+                                <td>{{ contact.email }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if contact.address %}
+                            <tr>
+                                <th><i class="bi bi-geo-alt-fill"></i> Address</th>
+                                <td>{{ contact.address }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if contact.notes %}
+                            <tr>
+                                <th><i class="bi bi-sticky-fill"></i> Notes</th>
+                                <td>{{ contact.notes }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th><i class="bi bi-calendar-plus"></i> Created</th>
+                            <td>{{ contact.created_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="bi bi-calendar-check"></i> Updated</th>
+                            <td>{{ contact.updated_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white d-flex justify-content-center gap-3">
+                <a href="{% url 'update_contact' contact.pk %}" class="btn btn-warning">
+                    <i class="bi bi-pencil-fill"></i> Edit Contact
+                </a>
+                <a href="{% url 'delete_contact' contact.pk %}" class="btn btn-danger">
+                    <i class="bi bi-trash-fill"></i> Delete Contact
+                </a>
+                <a href="{% url 'contact_list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
